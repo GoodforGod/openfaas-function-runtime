@@ -23,9 +23,9 @@ You just need to implement *Lambda* interface and implement it.
 
 ```java
 @Singleton
-public class MyLambda implements Lambda<String, String> {
+public class MyLambda implements Lambda {
 
-    public String handle(String s) {
+    public IResponse handle(IRequest s) {
         return "response for " + s;
     }
 }

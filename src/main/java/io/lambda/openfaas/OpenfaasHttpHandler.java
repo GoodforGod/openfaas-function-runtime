@@ -4,11 +4,14 @@ import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import io.lambda.openfaas.convert.Converter;
+import io.lambda.openfaas.error.HttpException;
 import io.lambda.openfaas.logger.LambdaLogger;
 import io.lambda.openfaas.model.IRequest;
 import io.lambda.openfaas.model.IResponse;
 import io.lambda.openfaas.model.Request;
+import io.lambda.openfaas.model.Response;
 import io.micronaut.core.annotation.Introspected;
+import io.micronaut.core.util.StringUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -60,7 +63,7 @@ public class OpenfaasHttpHandler implements HttpHandler {
         final Map<String, String> headers = exchange.getRequestHeaders().entrySet().stream()
                 .filter(e -> !e.getValue().isEmpty())
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get(0)));
-        System.out.println("Headers: " + headers);
+        logger.debug("Headers: %s", headers);
 
         final String query = exchange.getRequestURI().getRawQuery();
         final IRequest request = new Request(requestBody, headers, query, exchange.getRequestURI().getPath());
@@ -68,15 +71,23 @@ public class OpenfaasHttpHandler implements HttpHandler {
 
         final long funcStart = getTime();
         logger.debug("Starting function handling...");
-        final IResponse response = lambda.handle(request);
-        logger.info("Function handling took: %s", timeSpent(funcStart));
+        IResponse response;
+        try {
+            response = lambda.handle(request);
+            logger.info("Function handling took: %s", timeSpent(funcStart));
+        } catch (Exception e) {
+            logger.error("Function handling failed with: %s", e.getMessage());
+            final int status = (e instanceof HttpException) ? ((HttpException) e).getCode() : 500;
+            final String body = getErrorResponse(e);
+            response = new Response().setContentType("application/json").setStatusCode(status).setBody(body);
+        }
 
         final long resStart = getTime();
         logger.debug("Starting response processing...");
+
         final Headers responseHeaders = exchange.getResponseHeaders();
-        final String contentType = response.getContentType();
-        if (contentType.length() > 0)
-            responseHeaders.set("Content-Type", contentType);
+        if (StringUtils.isNotEmpty(response.getContentType()))
+            responseHeaders.set("Content-Type", response.getContentType());
         response.getHeaders().forEach(responseHeaders::set);
 
         final byte[] bytesOut = response.getBody() instanceof String
@@ -89,6 +100,11 @@ public class OpenfaasHttpHandler implements HttpHandler {
         }
 
         logger.info("Response processing took: %s", timeSpent(resStart));
+    }
+
+    private static String getErrorResponse(Throwable e) {
+        return String.format("{\"errorMessage\":\"%s\", \"errorType\":\"%s\"}",
+                e.getMessage(), e.getClass().getSimpleName());
     }
 
     private static long getTime() {
