@@ -1,4 +1,4 @@
-package io.lambda.convert;
+package io.lambda.openfaas.convert;
 
 /**
  * @author Anton Kurako (GoodforGod)

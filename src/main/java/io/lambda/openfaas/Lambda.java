@@ -2,19 +2,19 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full
 // license information.
 
-package io.lambda;
+package io.lambda.openfaas;
+
+import io.lambda.openfaas.model.IRequest;
+import io.lambda.openfaas.model.IResponse;
 
 /**
  * Lambda function contract to implement
- * 
- * @param <I> type of input
- * @param <O> type of output
  */
-public interface Lambda<I, O> {
+public interface Lambda {
 
     /**
      * @param request to process
      * @return output if specified type
      */
-    O handle(I request);
+    IResponse handle(IRequest request);
 }

@@ -96,13 +96,13 @@ publishing {
             from components.java
 
             pom {
-                name = 'AWS Lambda GraalVM Runtime'
-                url = 'https://github.com/GoodforGod/aws-lambda-runtime'
-                description = 'Runtime for building GraalVM compatible AWS Lambdas.'
+                name = 'OpenFaaS Function GraalVM Runtime'
+                url = 'https://github.com/GoodforGod/openfaas-function-runtime'
+                description = 'Runtime for building GraalVM compatible OpenFaaS Functions.'
 
                 license {
                     name = 'Apache License 2.0'
-                    url = 'https://github.com/GoodforGod/aws-lambda-runtime/blob/master/LICENSE'
+                    url = 'https://github.com/GoodforGod/openfaas-function-runtime/blob/master/LICENSE'
                     distribution = 'repo'
                 }
 
@@ -114,9 +114,9 @@ publishing {
                 }
 
                 scm {
-                    connection = 'scm:git:git://github.com/GoodforGod/aws-lambda-runtime.git'
-                    developerConnection = 'scm:git:ssh://GoodforGod/aws-lambda-runtime.git'
-                    url = 'https://github.com/GoodforGod/aws-lambda-runtime/tree/master'
+                    connection = 'scm:git:git://github.com/GoodforGod/openfaas-function-runtime.git'
+                    developerConnection = 'scm:git:ssh://GoodforGod/openfaas-function-runtime.git'
+                    url = 'https://github.com/GoodforGod/openfaas-function-runtime/tree/master'
                 }
             }
         }

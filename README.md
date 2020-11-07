@@ -1,8 +1,8 @@
-## AWS Lambda Runtime
+## OpenFaaS Function Runtime
 
-AWS lambda runtime with Micronaut DI support with GraalVM native lambda compatability.
+OpenFaaS Function runtime with Micronaut DI support with GraalVM native lambda compatibility.
 
-Provides Java native library *AwsLambdaRuntime* with support for Dependency Injection from [Micronaut framework](https://docs.micronaut.io/latest/guide/index.html#ioc).
+Provides Java native library *OpenfaasLambdaRuntime* with support for Dependency Injection from [Micronaut framework](https://docs.micronaut.io/latest/guide/index.html#ioc).
 
 ## Dependencies
 
@@ -39,7 +39,7 @@ You can use provided *LambdaLogger* for logging.
 
 ```java
 @Singleton
-public class MyLambda implements Lambda<String, String> {
+public class MyLambda implements Lambda {
 
     private final LambdaLogger logger;
     
@@ -48,7 +48,7 @@ public class MyLambda implements Lambda<String, String> {
         this.logger = logger;
     }
 
-    public String handle(String s) {
+    public IResponse handle(IRequest s) {
         return "response for " + s;
     }
 }

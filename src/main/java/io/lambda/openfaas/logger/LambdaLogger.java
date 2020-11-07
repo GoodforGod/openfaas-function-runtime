@@ -1,4 +1,4 @@
-package io.lambda.logger;
+package io.lambda.openfaas.logger;
 
 /**
  * @author Anton Kurako (GoodforGod)

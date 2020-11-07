@@ -1,8 +1,7 @@
-package io.lambda;
+package io.lambda.openfaas;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.lambda.config.ObjectMapperConfig;
-import io.lambda.model.AwsRequestEvent;
+import io.lambda.openfaas.config.ObjectMapperConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

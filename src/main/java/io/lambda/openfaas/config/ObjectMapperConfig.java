@@ -1,4 +1,4 @@
-package io.lambda.config;
+package io.lambda.openfaas.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
